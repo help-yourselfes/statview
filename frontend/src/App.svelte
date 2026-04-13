@@ -13,22 +13,27 @@
   <div class="stats">
     <div class="stat-block cpu">
       <span class="stats-block__title">CPU {$cpu.at(-1)}%</span>
-      <Graph color="green" history={$cpu} width={500} height={100} />
+      <div class="graph">
+        <Graph color="green" history={$cpu} />
+      </div>
     </div>
 
     <div class="stat-block ram">
       <span class="stats-block__title">RAM {$ram.at(-1)}%</span>
-      <Graph color="red" history={$ram} width={500} height={100} />
+      <div class="graph">
+        <Graph color="red" history={$ram} />
+      </div>
     </div>
   </div>
 </main>
 
 <style>
-  .cpu {
-    color: var(--green);
+  .stat-block {
+    display: flex;
+    flex-direction: row;
   }
-
-  .ram {
-    color: var(--red);
+  .graph {
+    width: 100%;
+    height: 40px;
   }
 </style>
