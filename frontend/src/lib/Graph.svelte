@@ -1,30 +1,45 @@
 <script lang="ts">
     export let history: number[] = [];
     export let color: ThemeColor = "cyan";
-    export let width: number = 300;
-    export let height: number = 80;
+    export let width: string = "300px";
+    export let height: string = "80px";
 
-    const padding = 10;
-
-    $: pathData = history
+    $: strokePath = history
         .map((val, i) => {
-            const x =
-                (i / (history.length - 1)) * (width - padding * 2) + padding;
-            const y = height - (val / 100) * (height - padding * 2) - padding;
-            return `${i === 0 ? "M" : "L"} ${x} ${y}`;
+            const x = (i / (history.length - 1)) * 100;
+            const y = 100 - val;
+            return `${i === 0 ? "M" : "L"} ${x} ${y ? y : 100}`;
         })
         .join(" ");
+    $: fillPath = "M 0 100 L" + strokePath.substring(1) + " L 100 100";
 </script>
 
-<div class="graph">
-    <svg {width} {height} viewBox="0 0 {width} {height}">
-            <path
-            d={pathData}
+<div class="graph" style={`width:${width}; height:${height}`}>
+    <svg
+        width="100%"
+        height="100%"
+        viewBox="0 0 100 100"
+        preserveAspectRatio="none"
+        overflow="clip"
+    >
+        <path
+            d={fillPath}
+            fill={color}
+            fill-opacity="0.2"
+            stroke="none"
+            stroke-width="5px"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            vector-effect="non-scaling-stroke"
+        />
+        <path
+            d={strokePath}
             fill="none"
             stroke={color}
             stroke-width="5px"
             stroke-linecap="round"
             stroke-linejoin="round"
+            vector-effect="non-scaling-stroke"
         />
     </svg>
 </div>
