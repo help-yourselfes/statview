@@ -15,10 +15,14 @@ type Stats struct {
 	RAM float64 `json:"ram"`
 }
 
+type Info struct {
+	CPU cpu.InfoStat
+}
+
 // App struct
 type App struct {
 	ctx        context.Context
-	state      Stats
+	info       *Info
 	ticker     *time.Ticker
 	tickerDone chan bool
 }
@@ -36,6 +40,7 @@ func NewApp() *App {
 // so we can call the runtime methods
 func (a *App) startup(ctx context.Context) {
 	a.ctx = ctx
+	a.UpdateInfo()
 
 	go func() {
 		for range a.ticker.C {
@@ -63,4 +68,24 @@ func (a *App) GetStats() Stats {
 		CPU: c[0],
 		RAM: v.UsedPercent,
 	}
+}
+
+func (a *App) UpdateInfo() {
+	cpuInfo, err := cpu.Info()
+	if err != nil {
+		a.Error(err)
+		return
+	}
+
+	a.info = &Info{
+		CPU: cpuInfo[0],
+	}
+}
+
+func (a *App) GetInfo() *Info {
+	return a.info
+}
+
+func (a *App) Error(err error) {
+	runtime.EventsEmit(a.ctx, "app:error", err)
 }
