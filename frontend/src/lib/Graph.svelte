@@ -1,8 +1,6 @@
 <script lang="ts">
     export let history: number[] = [];
     export let color: ThemeColor = "cyan";
-    export let width: string = "300px";
-    export let height: string = "80px";
 
     $: strokePath = history
         .map((val, i) => {
@@ -14,13 +12,11 @@
     $: fillPath = "M 0 100 L" + strokePath.substring(1) + " L 100 100";
 </script>
 
-<div class="graph" style={`width:${width}; height:${height}`}>
     <svg
-        width="100%"
-        height="100%"
         viewBox="0 0 100 100"
         preserveAspectRatio="none"
-        overflow="clip"
+        width="100%"
+        height="100%"
     >
         <path
             d={fillPath}
@@ -42,12 +38,10 @@
             vector-effect="non-scaling-stroke"
         />
     </svg>
-</div>
 
 <style>
     svg {
         display: block;
-        overflow: visible;
-        filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.2));
+        overflow: hidden;
     }
 </style>

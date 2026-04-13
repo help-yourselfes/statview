@@ -17,11 +17,13 @@ export const ramHistory = graphArray(MAX_LENGTH)
 
 
 export function startMonitoring(ms = 1000) {
-    const interval = setInterval(async () => {
+    const fn = async () => {
         const res = await GetStats();
         cpuHistory.push(Math.round(res.cpu))
         ramHistory.push(res.ram)
-    }, ms);
+    }
+    fn()
+    const interval = setInterval(fn, ms);
 
     return () => clearInterval(interval);
 }
