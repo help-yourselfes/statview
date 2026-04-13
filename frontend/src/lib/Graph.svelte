@@ -35,7 +35,7 @@
             d={strokePath}
             fill="none"
             stroke={colorCSS}
-            stroke-width="5px"
+            stroke-width="8px"
             stroke-linecap="round"
             stroke-linejoin="round"
             vector-effect="non-scaling-stroke"
