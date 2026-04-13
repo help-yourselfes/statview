@@ -1,4 +1,6 @@
 <script lang="ts">
+    import { derived } from "svelte/store";
+
     export let history: number[] = [];
     export let color: ThemeColor = "cyan";
 
@@ -10,6 +12,7 @@
         })
         .join(" ");
     $: fillPath = "M 0 100 L" + strokePath.substring(1) + " L 100 100";
+    $: colorCSS = `var(--${color})`
 </script>
 
     <svg
@@ -20,7 +23,7 @@
     >
         <path
             d={fillPath}
-            fill={color}
+            fill={colorCSS}
             fill-opacity="0.2"
             stroke="none"
             stroke-width="5px"
@@ -31,7 +34,7 @@
         <path
             d={strokePath}
             fill="none"
-            stroke={color}
+            stroke={colorCSS}
             stroke-width="5px"
             stroke-linecap="round"
             stroke-linejoin="round"

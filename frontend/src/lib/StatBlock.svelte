@@ -1,36 +1,27 @@
 <script lang="ts">
-    import { activeGraph } from "../appStore";
+    import { activeGraphType, graphColor } from "../appStore";
     import ProgressBar from "./ProgressBar.svelte";
     import { derived } from "svelte/store";
 
     export let type: graphType = "cpu";
     export let value = 50;
 
-    $: isActive = derived(activeGraph, (active) => active === type);
-    $: color = ((): ThemeColor => {
-        switch (type) {
-            case "cpu":
-                return "green";
-            case "ram":
-                return "red";
-            case "disk":
-                return "cyan";
-        }
-    })()
+    $: isActive = derived(activeGraphType, (active) => active === type);
+    $: color = graphColor(type);
 </script>
 
 <button
     class={`stat-block no-drag ${type} ${$isActive ?? "active"}`}
-    on:click={() => activeGraph.set(type)}
+    on:click={() => activeGraphType.set(type)}
 >
     <div class="stat-block__text">
         <span class="stats-block__title">{type}</span>
         <div class="progress-bar">
-            <ProgressBar {value} color={color} />
+            <ProgressBar {value} {color} />
         </div>
     </div>
     <div class={`stat-block__value ${$isActive ?? "active"}`}>
-        {value}{type ==="ram" ? '' : '%'}
+        {value}{type === "ram" ? "" : "%"}
     </div>
 </button>
 
@@ -63,7 +54,7 @@
     .stat-block__value {
         font-weight: 600;
     }
-    
+
     .stat-block__value {
         font-weight: 900;
     }
