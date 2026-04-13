@@ -3,9 +3,11 @@ package main
 import (
 	"context"
 	"fmt"
+	"time"
 
 	"github.com/shirou/gopsutil/v4/cpu"
 	"github.com/shirou/gopsutil/v4/mem"
+	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
 type Stats struct {
@@ -15,20 +17,38 @@ type Stats struct {
 
 // App struct
 type App struct {
-	ctx   context.Context
-	state Stats
+	ctx        context.Context
+	state      Stats
+	ticker     *time.Ticker
+	tickerDone chan bool
 }
 
 // NewApp creates a new App application struct
 func NewApp() *App {
 
-	return &App{}
+	return &App{
+		ticker:     time.NewTicker(1000 * time.Millisecond),
+		tickerDone: make(chan bool),
+	}
 }
 
 // startup is called when the app starts. The context is saved
 // so we can call the runtime methods
 func (a *App) startup(ctx context.Context) {
 	a.ctx = ctx
+
+	go func() {
+		for range a.ticker.C {
+			stats := a.GetStats()
+			runtime.EventsEmit(a.ctx, "monitor:update-stats", stats)
+		}
+	}()
+}
+
+func (a *App) Exit() {
+	a.ticker.Stop()
+	a.tickerDone <- true
+	runtime.Quit(a.ctx)
 }
 
 // Greet returns a greeting for the given name

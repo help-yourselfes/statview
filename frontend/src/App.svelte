@@ -1,12 +1,12 @@
 <script lang="ts">
   import logo from "./assets/images/logo-universal.png";
   import { onMount } from "svelte";
-  import { cpuHistory, ramHistory, startMonitoring } from "./statStore";
+  import { connectMonitor, cpuHistory, ramHistory, startMonitoring } from "./statStore";
   const cpu = cpuHistory.array;
   const ram = ramHistory.array;
   import Graph from "./lib/Graph.svelte";
 
-  onMount(() => startMonitoring(1000));
+  onMount(() => connectMonitor());
 </script>
 
 <main>
