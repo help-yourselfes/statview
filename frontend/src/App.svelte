@@ -12,14 +12,23 @@
   import { activeGraph, activeGraphType, activeColor } from "./appStore";
   import StatBlock from "./lib/StatBlock.svelte";
 
-  
   onMount(() => startMonitoring(1000));
 </script>
 
 <main>
   <div class="graph">
-    {$activeGraphType}
-    <Graph history={$activeGraph} color={$activeColor}/>
+    <div class="graph__line-container hor">
+      <div class="graph__line"></div>
+      <div class="graph__line"></div>
+      <div class="graph__line"></div>
+    </div>
+    <div class="graph__line-container ver">
+      <div class="graph__line"></div>
+      <div class="graph__line"></div>
+    </div>
+    <div class="graph__svg">
+      <Graph history={$activeGraph} color={$activeColor} />
+    </div>
   </div>
   <div class="stats">
     <StatBlock type="cpu" value={$cpuValue} />
@@ -29,11 +38,38 @@
 
 <style>
   .graph {
-    top: 0; 
+    top: 0;
     left: 0;
     position: absolute;
     width: 100%;
     height: 100%;
     opacity: 30%;
+  }
+
+  .graph__line-container,
+  .graph__svg {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+  }
+
+  .graph__line-container {
+    display: flex;
+    justify-content: space-evenly;
+    opacity: 0.2;
+  }
+
+  .graph__line {
+    background-color: var(--current);
+  }
+
+  .hor .graph__line {
+    width: 4px;
+    height: 100%;
+  }
+
+  .ver .graph__line {
+    width: 100%;
+    height: 4px;
   }
 </style>

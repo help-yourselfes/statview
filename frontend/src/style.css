@@ -43,3 +43,11 @@ body {
 .no-drag {
     --wails-draggable:no-drag
 }
+
+.hor {
+flex-direction: row;
+}
+
+.ver {
+flex-direction: column;
+}
