@@ -12,11 +12,12 @@ import (
 
 type Stats struct {
 	CPU float64 `json:"cpu"`
-	RAM float64 `json:"ram"`
+	RAM uint64  `json:"ram"`
 }
 
 type Info struct {
-	CPU cpu.InfoStat
+	CPU    cpu.InfoStat
+	MaxRAM uint64 `json:"ram-max"`
 }
 
 // App struct
@@ -66,7 +67,7 @@ func (a *App) GetStats() Stats {
 	c, _ := cpu.Percent(0, false)
 	return Stats{
 		CPU: c[0],
-		RAM: v.UsedPercent,
+		RAM: v.Used,
 	}
 }
 
@@ -77,12 +78,22 @@ func (a *App) UpdateInfo() {
 		return
 	}
 
+	memInfo, err := mem.VirtualMemory()
+	if err != nil {
+		a.Error(err)
+		return
+	}
+
 	a.info = &Info{
-		CPU: cpuInfo[0],
+		CPU:    cpuInfo[0],
+		MaxRAM: memInfo.Total,
 	}
 }
 
 func (a *App) GetInfo() *Info {
+	if a.info == nil {
+		a.UpdateInfo()
+	}
 	return a.info
 }
 
