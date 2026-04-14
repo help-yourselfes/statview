@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { t } from "../i18n";
     import { activeGraphType, graphColor } from "../appStore";
     import ProgressBar from "./ProgressBar.svelte";
     import { derived } from "svelte/store";
@@ -8,15 +9,17 @@
 
     $: isActive = derived(activeGraphType, (active) => active === type);
     $: color = graphColor(type);
+    $: colorCSS = "--color:var(--" + color + ")";
 </script>
 
 <button
+    style={colorCSS}
     class={`stat-block no-drag ${type} `}
     on:click={() => activeGraphType.set(type)}
 >
-    <div class={`stat-block__back ${$isActive ? "active" : ""}`} style={'--color:var(--'+color+')'} />
+    <div class={`stat-block__back ${$isActive ? "active" : ""}`} />
     <div class="stat-block__text">
-        <span class="stats-block__title">{type}</span>
+        <span class="stats-block__title">{$t(type)}</span>
         <div class="progress-bar">
             <ProgressBar {value} {color} />
         </div>
@@ -38,6 +41,7 @@
         flex-direction: row;
         position: relative;
         gap: 4px;
+        color: inherit;
     }
     .stat-block__back {
         z-index: -1;
@@ -49,14 +53,18 @@
         border-radius: 12px;
         top: 4px;
         left: 4px;
-        padding: -8px;    
+        padding: -8px;
         background-color: color-mix(
             in srgb,
             var(--color) 10%,
             transparent 100%
         );
         opacity: 0;
-        transition: opacity, padding,left,top 100ms;
+        transition:
+            opacity,
+            padding,
+            left,
+            top 100ms;
     }
     .stat-block__back.active {
         top: -4px;
@@ -64,11 +72,24 @@
         padding: 8px;
         opacity: 1;
     }
-    .stat-block__value {
-        font-weight: 600;
+
+    .stat-block__text {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .stats-block__title {
+        font-size: 1rem;
+        text-align: left;
     }
 
     .stat-block__value {
+        font-size: 3rem;
+        color: var(--color);
+        font-weight: 600;
+    }
+
+    .stat-block__value.active {
         font-weight: 900;
     }
 </style>
