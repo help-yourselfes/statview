@@ -5,13 +5,15 @@ import (
 	"time"
 
 	"github.com/shirou/gopsutil/v4/cpu"
+	"github.com/shirou/gopsutil/v4/disk"
 	"github.com/shirou/gopsutil/v4/mem"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
 type Stats struct {
-	CPU float64 `json:"cpu"`
-	RAM uint64  `json:"ram"`
+	CPU  float64 `json:"cpu"`  // in %
+	RAM  uint64  `json:"ram"`  // in Gb
+	Disk float64 `json:"disk"` // in %
 }
 
 type Info struct {
@@ -59,9 +61,12 @@ func (a *App) Exit() {
 func (a *App) GetStats() Stats {
 	v, _ := mem.VirtualMemory()
 	c, _ := cpu.Percent(0, false)
+	d, _ := disk.Usage("/")
+
 	return Stats{
-		CPU: c[0],
-		RAM: v.Used,
+		CPU:  c[0],
+		RAM:  v.Used,
+		Disk: d.UsedPercent,
 	}
 }
 
