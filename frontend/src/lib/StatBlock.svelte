@@ -32,7 +32,8 @@
 <style>
     .progress-bar {
         height: 1rem;
-        width: 10rem;
+        width: 100%;
+        min-width: 5rem;
     }
     .stat-block {
         background: none;
@@ -76,6 +77,7 @@
     .stat-block__text {
         display: flex;
         flex-direction: column;
+        width: min-content;
     }
 
     .stats-block__title {

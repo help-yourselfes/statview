@@ -20,7 +20,7 @@
 <style>
     .progress-bar {
         width: 100%;
-        height: 100%;
+        height: 0.75rem;
         position: relative;
     }
     .progress-bar__background,
