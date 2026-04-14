@@ -11,6 +11,7 @@
   import { derived } from "svelte/store";
   import { activeGraph, activeGraphType, activeColor } from "./appStore";
   import StatBlock from "./lib/StatBlock.svelte";
+  import AppOverlay from "./lib/AppOverlay.svelte";
 
   onMount(() => startMonitoring(1000));
 </script>
@@ -34,9 +35,19 @@
     <StatBlock type="cpu" value={$cpuValue} />
     <StatBlock type="ram" value={$ram.at(-1)} />
   </div>
+  <div class="overlay">
+    <AppOverlay />
+  </div>
 </main>
 
 <style>
+  .overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+  }
+
   .graph {
     top: 0;
     left: 0;
