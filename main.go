@@ -32,10 +32,7 @@ func main() {
 		DisableResize: true,
 		Frameless:     true,
 		Windows: &windows.Options{
-			DisablePinchZoom:     true,
-			WindowIsTranslucent:  true,
-			WebviewIsTransparent: true,
-			BackdropType:         windows.Mica,
+			DisablePinchZoom: true,
 		},
 	})
 
