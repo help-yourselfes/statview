@@ -10,15 +10,17 @@ import (
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
+const GB = 1_073_741_824
+
 type Stats struct {
 	CPU  float64 `json:"cpu"`  // in %
-	RAM  uint64  `json:"ram"`  // in Gb
+	RAM  float64 `json:"ram"`  // in GB
 	Disk float64 `json:"disk"` // in %
 }
 
 type Info struct {
 	CPU    cpu.InfoStat
-	MaxRAM uint64 `json:"ram-max"`
+	MaxRAM float64 `json:"ram-max"`
 }
 
 // App struct
@@ -65,7 +67,7 @@ func (a *App) GetStats() Stats {
 
 	return Stats{
 		CPU:  c[0],
-		RAM:  v.Used,
+		RAM:  float64(v.Used) / GB,
 		Disk: d.UsedPercent,
 	}
 }
@@ -85,7 +87,7 @@ func (a *App) UpdateInfo() {
 
 	a.info = &Info{
 		CPU:    cpuInfo[0],
-		MaxRAM: memInfo.Total,
+		MaxRAM: float64(memInfo.Total) / GB,
 	}
 }
 

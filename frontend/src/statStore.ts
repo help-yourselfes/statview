@@ -1,5 +1,5 @@
 import { writable } from 'svelte/store';
-import {EventsOn} from '../wailsjs/runtime'
+import { EventsOn } from '../wailsjs/runtime'
 import { main } from '../wailsjs/go/models';
 
 const MAX_LENGTH = 20;
@@ -15,10 +15,12 @@ function graphArray<T = number>(maxLength = 10) {
 
 export const cpuHistory = graphArray(MAX_LENGTH)
 export const ramHistory = graphArray(MAX_LENGTH)
+export const diskHistory = graphArray(MAX_LENGTH)
 
 export function connectMonitor() {
     EventsOn("monitor:update-stats", (stats: main.Stats) => {
         cpuHistory.push(Math.round(stats.cpu))
-        ramHistory.push(stats.ram)
+        ramHistory.push(Math.round(stats.ram * 10) / 10)
+        diskHistory.push(Math.round(stats.disk))
     })
 }
