@@ -9,7 +9,7 @@
 
   import Graph from "./lib/Graph.svelte";
   import { derived } from "svelte/store";
-  import { activeGraph, activeGraphType, activeColor } from "./appStore";
+  import { activeGraph, activeColor } from "./appStore";
   import StatBlock from "./lib/StatBlock.svelte";
   import AppOverlay from "./lib/AppOverlay.svelte";
 
