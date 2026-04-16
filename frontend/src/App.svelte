@@ -13,7 +13,7 @@
   import StatBlock from "./lib/StatBlock.svelte";
   import AppOverlay from "./lib/AppOverlay.svelte";
 
-  onMount(() => startMonitoring(1000));
+  onMount(() => connectMonitor());
 </script>
 
 <main>
