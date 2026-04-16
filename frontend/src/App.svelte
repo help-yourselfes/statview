@@ -1,7 +1,7 @@
 <script lang="ts">
   import logo from "./assets/images/logo-universal.png";
   import { onMount } from "svelte";
-  import { cpuHistory, ramHistory, startMonitoring } from "./statStore";
+  import { cpuHistory, ramHistory, connectMonitor } from "./statStore";
   const cpu = cpuHistory;
   const ram = ramHistory;
 
