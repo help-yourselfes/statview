@@ -1,5 +1,5 @@
 import { derived, writable } from "svelte/store";
-import { cpuHistory, ramHistory } from "./statStore";
+import { cpuHistory, diskHistory, ramHistory } from "./statStore";
 
 export const activeGraphType = writable<graphType>("cpu")
 
@@ -7,7 +7,7 @@ export const activeGraph = derived(activeGraphType, ($type, set) => {
     const stores = {
         cpu: cpuHistory,
         ram: ramHistory,
-        disk: ramHistory // change it later
+        disk: diskHistory
     }
     return stores[$type].subscribe(set)
 }, [] as number[])

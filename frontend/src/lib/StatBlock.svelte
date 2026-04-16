@@ -6,6 +6,7 @@
 
     export let type: graphType = "cpu";
     export let value = 50;
+    export let progressbarValue = value;
 
     $: isActive = derived(activeGraphType, (active) => active === type);
     $: color = graphColor(type);
@@ -21,11 +22,11 @@
     <div class="stat-block__text">
         <span class="stats-block__title">{$t(type)}</span>
         <div class="progress-bar">
-            <ProgressBar {value} {color} />
+            <ProgressBar value={progressbarValue} {color} />
         </div>
     </div>
     <div class={`stat-block__value ${$isActive ? "active" : ""}`}>
-        {value}{type === "ram" ? "" : "%"}
+        {value}{type === "ram" ? "ГБ" : "%"}
     </div>
 </button>
 
@@ -43,8 +44,10 @@
         position: relative;
         gap: 4px;
         color: inherit;
+        cursor: pointer;
     }
     .stat-block__back {
+        box-sizing: content-box;
         z-index: -1;
         position: absolute;
         display: block;
@@ -54,23 +57,19 @@
         border-radius: 12px;
         top: 4px;
         left: 4px;
-        padding: -8px;
+        padding: 0px;
         background-color: color-mix(
             in srgb,
             var(--color) 10%,
             transparent 100%
         );
         opacity: 0;
-        transition:
-            opacity,
-            padding,
-            left,
-            top 100ms;
+        transition: padding 100ms;
     }
     .stat-block__back.active {
         top: -4px;
         left: -4px;
-        padding: 8px;
+        padding: 4px;
         opacity: 1;
     }
 
@@ -88,10 +87,10 @@
     .stat-block__value {
         font-size: 3rem;
         color: var(--color);
-        font-weight: 600;
+        font-weight: 500;
     }
 
     .stat-block__value.active {
-        font-weight: 900;
+        font-weight: 700;
     }
 </style>

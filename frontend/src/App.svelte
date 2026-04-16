@@ -1,11 +1,20 @@
 <script lang="ts">
   import logo from "./assets/images/logo-universal.png";
   import { onMount } from "svelte";
-  import { cpuHistory, ramHistory, connectMonitor } from "./statStore";
+  import {
+    cpuHistory,
+    diskHistory,
+    info,
+    maxRam,
+    ramHistory,
+    setup,
+    started,
+  } from "./statStore";
   const cpu = cpuHistory;
   const ram = ramHistory;
 
-  const cpuValue = derived(cpu, (cpu) => cpu[0]);
+  const cpuValue = derived(cpu, (cpu) => cpu.at(-1));
+  const diskValue = derived(diskHistory, (disk) => disk.at(-1))
 
   import Graph from "./lib/Graph.svelte";
   import { derived } from "svelte/store";
@@ -13,31 +22,38 @@
   import StatBlock from "./lib/StatBlock.svelte";
   import AppOverlay from "./lib/AppOverlay.svelte";
 
-  onMount(() => connectMonitor());
+  onMount(() => setup());
 </script>
 
 <main>
-  <div class="graph">
-    <div class="graph__line-container hor">
-      <div class="graph__line"></div>
-      <div class="graph__line"></div>
-      <div class="graph__line"></div>
+  {#if started}
+    <div class="graph">
+      <div class="graph__line-container hor">
+        <div class="graph__line"></div>
+        <div class="graph__line"></div>
+        <div class="graph__line"></div>
+      </div>
+      <div class="graph__line-container ver">
+        <div class="graph__line"></div>
+        <div class="graph__line"></div>
+      </div>
+      <div class="graph__svg">
+        <Graph history={$activeGraph} color={$activeColor} />
+      </div>
     </div>
-    <div class="graph__line-container ver">
-      <div class="graph__line"></div>
-      <div class="graph__line"></div>
+    <div class="stats">
+      <StatBlock type="cpu" value={$cpuValue} />
+      <StatBlock type="disk" value={$diskValue} />
+      <StatBlock
+        type="ram"
+        value={Math.round($ram.at(-1) * 10) / 10}
+        progressbarValue={($ram.at(-1) / $maxRam) * 100}
+      />
     </div>
-    <div class="graph__svg">
-      <Graph history={$activeGraph} color={$activeColor} />
+    <div class="overlay">
+      <AppOverlay />
     </div>
-  </div>
-  <div class="stats">
-    <StatBlock type="cpu" value={$cpuValue} />
-    <StatBlock type="ram" value={$ram.at(-1)} />
-  </div>
-  <div class="overlay">
-    <AppOverlay />
-  </div>
+  {/if}
 </main>
 
 <style>
@@ -82,5 +98,9 @@
   .ver .graph__line {
     width: 100%;
     height: 4px;
+  }
+
+  .stats {
+    padding: 12px;
   }
 </style>
