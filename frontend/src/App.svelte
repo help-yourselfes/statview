@@ -2,38 +2,85 @@
   import logo from "./assets/images/logo-universal.png";
   import { onMount } from "svelte";
   import { cpuHistory, ramHistory, startMonitoring } from "./statStore";
-  const cpu = cpuHistory.array;
-  const ram = ramHistory.array;
+  const cpu = cpuHistory;
+  const ram = ramHistory;
+
+  const cpuValue = derived(cpu, (cpu) => cpu[0]);
+
   import Graph from "./lib/Graph.svelte";
+  import { derived } from "svelte/store";
+  import { activeGraph, activeGraphType, activeColor } from "./appStore";
+  import StatBlock from "./lib/StatBlock.svelte";
+  import AppOverlay from "./lib/AppOverlay.svelte";
 
   onMount(() => startMonitoring(1000));
 </script>
 
 <main>
+  <div class="graph">
+    <div class="graph__line-container hor">
+      <div class="graph__line"></div>
+      <div class="graph__line"></div>
+      <div class="graph__line"></div>
+    </div>
+    <div class="graph__line-container ver">
+      <div class="graph__line"></div>
+      <div class="graph__line"></div>
+    </div>
+    <div class="graph__svg">
+      <Graph history={$activeGraph} color={$activeColor} />
+    </div>
+  </div>
   <div class="stats">
-    <div class="stat-block cpu">
-      <span class="stats-block__title">CPU {$cpu.at(-1)}%</span>
-      <div class="graph">
-        <Graph color="green" history={$cpu} />
-      </div>
-    </div>
-
-    <div class="stat-block ram">
-      <span class="stats-block__title">RAM {$ram.at(-1)}%</span>
-      <div class="graph">
-        <Graph color="red" history={$ram} />
-      </div>
-    </div>
+    <StatBlock type="cpu" value={$cpuValue} />
+    <StatBlock type="ram" value={$ram.at(-1)} />
+  </div>
+  <div class="overlay">
+    <AppOverlay />
   </div>
 </main>
 
 <style>
-  .stat-block {
-    display: flex;
-    flex-direction: row;
-  }
-  .graph {
+  .overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
     width: 100%;
-    height: 40px;
+  }
+
+  .graph {
+    top: 0;
+    left: 0;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 30%;
+  }
+
+  .graph__line-container,
+  .graph__svg {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+  }
+
+  .graph__line-container {
+    display: flex;
+    justify-content: space-evenly;
+    opacity: 0.2;
+  }
+
+  .graph__line {
+    background-color: var(--current);
+  }
+
+  .hor .graph__line {
+    width: 4px;
+    height: 100%;
+  }
+
+  .ver .graph__line {
+    width: 100%;
+    height: 4px;
   }
 </style>

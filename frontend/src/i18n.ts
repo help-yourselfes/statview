@@ -13,4 +13,4 @@ type Translation = (lang: Lang, key: Key) => (typeof translations)[Lang][Key];
 
 export const t = derived(locale, ($locale) => (key: Key) => {
     return translations[$locale][key] as Translation || key;
-});
+})

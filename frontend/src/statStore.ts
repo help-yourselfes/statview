@@ -4,12 +4,12 @@ import { GetStats } from "../wailsjs/go/main/App";
 const MAX_LENGTH = 20;
 
 function graphArray<T = number>(maxLength = 10) {
-    const array = writable(new Array<T>(maxLength));
+    const {subscribe, update} = writable(new Array<T>(maxLength));
     const push = (value: T) => {
-        array.update(a => [...a, value].slice(-maxLength))
+        update(a => [...a, value].slice(-maxLength))
     }
 
-    return { array, push }
+    return { subscribe, push }
 }
 
 export const cpuHistory = graphArray(MAX_LENGTH)
