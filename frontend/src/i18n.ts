@@ -1,8 +1,8 @@
 import { writable, derived } from 'svelte/store';
 
 const translations = {
-    ru: { cpu: "Процессор", ram: "Память", disk: "Диск", close: "Закрыть" },
-    en: { cpu: "Processor", ram: "Memory", disk: "Disk", close: "Close" }
+    ru: { cpu: "Процессор", ram: "Память", disk: "Диск", close: "Закрыть", cpu_cores: "Ядер", cpu_mhz: "Частота", mhz: "мГц", gb: "ГБ" },
+    en: { cpu: "Processor", ram: "Memory", disk: "Disk", close: "Close", cpu_cores: "Cores", cpu_mhz: "Speed", mhz: "MHz", gb: "GB" }
 };
 
 export const locale = writable('ru');

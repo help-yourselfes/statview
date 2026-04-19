@@ -1,5 +1,5 @@
 html {
-    background-color: transparent;
+    background-color: var(--background);
     text-align: center;
     color: var(--foreground);
 }
@@ -9,7 +9,7 @@ html {
 }
 
 :root {
-  --background: #282a36;
+  --background: #20222B;
   --current: #44475a;
   --foreground: #f8f8f2;
   --comment: #6272a4;
@@ -46,6 +46,7 @@ button {
     color: inherit;
     font-family: inherit;
     font-weight: inherit;
+    font-size: inherit;
 }
 
 #app {

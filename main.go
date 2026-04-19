@@ -18,9 +18,11 @@ func main() {
 
 	// Create application with options
 	err := wails.Run(&options.App{
-		Title:  "statview",
-		Width:  450,
-		Height: 300,
+		Title:     "statview",
+		Width:     450,
+		Height:    300,
+		MinWidth:  280,
+		MinHeight: 225,
 		AssetServer: &assetserver.Options{
 			Assets: assets,
 		},
@@ -29,8 +31,7 @@ func main() {
 		Bind: []interface{}{
 			app,
 		},
-		DisableResize: true,
-		Frameless:     true,
+		Frameless: true,
 		Windows: &windows.Options{
 			DisablePinchZoom: true,
 		},

@@ -6,7 +6,9 @@
 
     export let type: graphType = "cpu";
     export let value = 50;
-    export let progressbarValue = value;
+    export let progress = undefined;
+
+    $: progressbarValue = progress ?? value
 
     $: isActive = derived(activeGraphType, (active) => active === type);
     $: color = graphColor(type);
@@ -41,6 +43,7 @@
         border: none;
         display: flex;
         flex-direction: row;
+        align-items: center;
         position: relative;
         gap: 4px;
         color: inherit;
@@ -88,6 +91,7 @@
         font-size: 3rem;
         color: var(--color);
         font-weight: 500;
+        min-width: 3ch;
     }
 
     .stat-block__value.active {
