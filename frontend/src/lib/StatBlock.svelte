@@ -28,7 +28,7 @@
         </div>
     </div>
     <div class={`stat-block__value ${$isActive ? "active" : ""}`}>
-        {value}{type === "ram" ? "ГБ" : "%"}
+        {value}{type === "ram" ? t('gb') : "%"}
     </div>
 </button>
 
