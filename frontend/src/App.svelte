@@ -4,10 +4,8 @@
     cpuHistory,
     diskHistory,
     info,
-    maxRam,
     ramHistory,
     setup,
-    started,
   } from "./statStore";
   import Graph from "./lib/Graph.svelte";
   import { activeGraph, activeColor } from "./appStore";
@@ -53,12 +51,12 @@
     <div class="cpu">
       <span class="cpu__name">{$info.CPU.name}</span>
       <p class="info">
-        <span class="info__name"> {$t("cpu_cores")} </span>
+        <span class="info__name"> {t("cpu_cores")} </span>
         <span class="info__value"> {$info.CPU.cores} </span>
       </p>
       <p class="info">
-        <span class="info__name"> {$t("cpu_mhz")} </span>
-        <span class="info__value"> {$info.CPU.mhz}{$t("mhz")}</span>
+        <span class="info__name"> {t("cpu_mhz")} </span>
+        <span class="info__value"> {$info.CPU.mhz}{t("mhz")}</span>
       </p>
     </div>
   {/if}

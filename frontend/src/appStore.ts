@@ -3,13 +3,13 @@ import { cpuHistory, diskHistory, ramHistory } from "./statStore";
 
 export const activeGraphType = writable<graphType>("cpu")
 
-export const activeGraph = derived(activeGraphType, ($type, set) => {
+export const activeGraph = derived(activeGraphType, (type, set) => {
     const stores = {
         cpu: cpuHistory,
         ram: ramHistory,
         disk: diskHistory
     }
-    return stores[$type].subscribe(set)
+    return stores[type].subscribe(set)
 }, [] as number[])
 
 export const graphColor = (type: graphType): ThemeColor => {

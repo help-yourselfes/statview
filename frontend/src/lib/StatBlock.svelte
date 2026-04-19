@@ -22,7 +22,7 @@
 >
     <div class={`stat-block__back ${$isActive ? "active" : ""}`} />
     <div class="stat-block__text">
-        <span class="stats-block__title">{$t(type)}</span>
+        <span class="stats-block__title">{t(type)}</span>
         <div class="progress-bar">
             <ProgressBar value={progressbarValue} {color} />
         </div>

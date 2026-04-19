@@ -10,7 +10,7 @@
 </script>
 
 <div class="overlay">
-    <button class="overlay__close-button" on:click={close}> {$t("close")} </button>
+    <button class="overlay__close-button" on:click={close}> {t("close")} </button>
     <span class="overlay__title">hys - statview</span>
 </div>
 
