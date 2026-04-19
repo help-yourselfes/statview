@@ -1,6 +1,9 @@
 # Statview
 A system monitor written in Go, Wails, and Svelte
 
+Download:
+[📦 Windows](https://github.com/help-yourselfes/statview/releases/latest/download/statview.exe)
+
 ## Features
 * Monitoring CPU usage, RAM (in GB), and Disk load.
 * Displays CPU model, core count, and current frequency.
