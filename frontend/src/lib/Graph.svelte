@@ -1,38 +1,50 @@
 <script lang="ts">
+    import { derived } from "svelte/store";
+
     export let history: number[] = [];
     export let color: ThemeColor = "cyan";
-    export let width: number = 300;
-    export let height: number = 80;
 
-    const padding = 10;
-
-    $: pathData = history
+    $: strokePath = history
         .map((val, i) => {
-            const x =
-                (i / (history.length - 1)) * (width - padding * 2) + padding;
-            const y = height - (val / 100) * (height - padding * 2) - padding;
-            return `${i === 0 ? "M" : "L"} ${x} ${y}`;
+            const x = (i / (history.length - 1)) * 100;
+            const y = 100 - val;
+            return `${i === 0 ? "M" : "L"} ${x} ${y ? y : 100}`;
         })
         .join(" ");
+    $: fillPath = "M 0 100 L" + strokePath.substring(1) + " L 100 100";
+    $: colorCSS = `var(--${color})`
 </script>
 
-<div class="graph">
-    <svg {width} {height} viewBox="0 0 {width} {height}">
-            <path
-            d={pathData}
-            fill="none"
-            stroke={color}
+    <svg
+        viewBox="0 0 100 100"
+        preserveAspectRatio="none"
+        width="100%"
+        height="100%"
+    >
+        <path
+            d={fillPath}
+            fill={colorCSS}
+            fill-opacity="0.2"
+            stroke="none"
             stroke-width="5px"
             stroke-linecap="round"
             stroke-linejoin="round"
+            vector-effect="non-scaling-stroke"
+        />
+        <path
+            d={strokePath}
+            fill="none"
+            stroke={colorCSS}
+            stroke-width="8px"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            vector-effect="non-scaling-stroke"
         />
     </svg>
-</div>
 
 <style>
     svg {
         display: block;
-        overflow: visible;
-        filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.2));
+        overflow: hidden;
     }
 </style>

@@ -10,3 +10,8 @@ type ThemeColor =
   | "purple"
   | "red"
   | "yellow";
+
+type graphType =
+  | "cpu"
+  | "ram"
+  | "disk"
